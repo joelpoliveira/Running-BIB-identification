@@ -17,7 +17,7 @@ def identify_bibs(image_path, weights_path):
         None
     """
     # Load YOLO model
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path=weights_path, force_reload=True)
+    model = YOLO(weights_path)
 
     # Read the image
     image = cv2.imread(image_path)
@@ -52,5 +52,9 @@ def identify_bibs(image_path, weights_path):
 # Example usage
 if __name__ == "__main__":
     image_path = "path_to_your_image.jpg"  # Replace with your image path
-    weights_path = ".pt"  # Replace with your YOLO weights file
+    weights_path = os.getenv("MODEL_PATH")  # Replace with your YOLO weights file
+
+    if weights_path is None:
+        raise ("Error: YOLO weights path not set in environment variables.")
+    # Call the function to identify bibs
     identify_bibs(image_path, weights_path)
